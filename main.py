@@ -6,7 +6,6 @@ from collections import Counter
 
 
 # 1. Узел дерева Хаффмана
-
 class Node:
     counter = 0
 
@@ -27,14 +26,14 @@ class Node:
 
 
 # 2. Построение дерева
-
 def build_tree(data):
 
     frequencies = Counter(data)
 
     heap = []
 
-    for char, freq in frequencies.items():
+    for char in sorted(frequencies):
+        freq = frequencies[char]
         heapq.heappush(heap, Node(char, freq))
 
     if len(heap) == 1:
@@ -61,7 +60,6 @@ def build_tree(data):
 
 
 # 3. Создание кодов Хаффмана
-
 def build_codes(node, code="", codes=None):
 
     if codes is None:
@@ -78,7 +76,6 @@ def build_codes(node, code="", codes=None):
 
 
 # 4. Сжатие данных
-
 def compress_data(data):
 
     if not data:
@@ -114,7 +111,6 @@ def compress_data(data):
 
 
 # 5. Распаковка данных
-
 def decompress_data(compressed, frequencies, bit_length, original_size):
 
     if original_size == 0:
@@ -173,7 +169,6 @@ def decompress_data(compressed, frequencies, bit_length, original_size):
 
 
 # 6. Упаковка файла
-
 def compress_file(source_file, archive_file):
 
     with open(source_file, "rb") as file:
@@ -194,7 +189,6 @@ def compress_file(source_file, archive_file):
 
 
 # 7. Распаковка файла
-
 def decompress_file(archive_file, output_file):
 
     with open(archive_file, "rb") as file:
@@ -223,7 +217,6 @@ def decompress_file(archive_file, output_file):
 
 
 # 8. Расчёт степени сжатия
-
 def calculate_ssr(source_size, compressed_size):
 
     if source_size == 0:
@@ -233,7 +226,6 @@ def calculate_ssr(source_size, compressed_size):
 
 
 # 9. Сравнение через diff
-
 def compare_files(source_file, unpacked_file):
 
     result = subprocess.run(
@@ -246,7 +238,6 @@ def compare_files(source_file, unpacked_file):
 
 
 # 10. Главная функция
-
 def main():
 
     source_file = "book.txt"
@@ -271,7 +262,6 @@ def main():
     print(f"Размер архива: {compressed_size:,} байт")
 
     # Rare: степень сжатия SSR
-
     ssr = calculate_ssr(
         source_size,
         compressed_size
@@ -285,7 +275,6 @@ def main():
         print("SSR не положительная.")
 
     # Medium: распаковка файла
-
     decompress_file(
         archive_file,
         unpacked_file
@@ -294,7 +283,6 @@ def main():
     print("\nФайл успешно распакован.")
 
     # Rare: сравнение через diff
-
     if compare_files(source_file, unpacked_file):
         print("diff: файлы полностью совпадают.")
     else:
